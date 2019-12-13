@@ -1,0 +1,38 @@
+﻿@page "/reviewsoverview"
+@inherits ReviewOverviewBase
+
+<h1 class="page-title">All Reviews</h1>
+@if (Reviews == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="EmployeeTable">
+        <thead>
+            <tr>
+                <th>Review ID</th>
+                <th>User ID</th>
+                <th>Review Stars</th>
+                <th>Review Comment</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Reviews)
+            {
+                <tr>
+                    <td>@review.Id</td>
+                    <td>@review.UserId</td>
+                    <td>@review.Stars</td>
+                    <td>@review.ReviewComment</td>
+                    <td>
+                        <a href="@($"reviewdetail/{review.Id}")" class="btn btn-primary table-btn">
+                            <i class="fas fa-info-circle">Details</i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

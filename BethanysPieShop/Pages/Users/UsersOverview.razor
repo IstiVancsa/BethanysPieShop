@@ -1,0 +1,36 @@
+﻿@page "/usersoverview"
+@inherits UsersOverviewBase
+
+<h1 class="page-title">All Users</h1>
+@if (Users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="EmployeeTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>User UserName</th>
+                <th>User Age</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Username</td>
+                    <td>@user.Age</td>
+                    <td>
+                    <a href="@($"userdetail/{user.Id}")" class="btn btn-primary table-btn">
+                        <i class="fas fa-info-circle">Details</i>
+                    </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BethanysPieShopHRM.Shared.Services
@@ -20,23 +21,23 @@ namespace BethanysPieShopHRM.Shared.Services
 
         public async Task<bool> AddUserAsync(User user)
         {
-            //bool result = true;
-            //using (var client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(this.UrlApi);
-            //    client.DefaultRequestHeaders.Accept.Clear();
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    //this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(this.Token);
 
-            //    var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+            var uri = new Uri(string.Format(this._httpClient.BaseAddress + "User/AddUser"));
+            try
+            {
 
-            //    HttpResponseMessage response = await client.PostAsync(this.UrlApi, content);
+                //this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(this.Token);
+                var serializedUser = JsonConvert.SerializeObject(user);
+                var data = new StringContent(serializedUser, Encoding.UTF8, "application/json");
+                var response = await this._httpClient.PostAsync(uri, data);
+                return response.IsSuccessStatusCode;
 
-            //    result = response.IsSuccessStatusCode;
-            //}
-
-            //return result;
-            throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                var dsad = ex.Message;
+                return false;
+            }
         }
 
         public async Task<bool> DeleteUserAsync(Guid id)
@@ -92,7 +93,7 @@ namespace BethanysPieShopHRM.Shared.Services
 
         public async Task<TResult> ReturnGetHttp<TResult>(string url)
         {
-            TResult items = default(TResult); 
+            TResult items = default(TResult);
 
             var uri = new Uri(string.Format(url));
             try

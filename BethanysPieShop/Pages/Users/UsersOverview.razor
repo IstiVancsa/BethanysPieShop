@@ -1,5 +1,6 @@
 ﻿@page "/usersoverview"
 @inherits UsersOverviewBase
+@using BethanysPieShopHRM.Shared.DTOs
 
 <h1 class="page-title">All Users</h1>
 @if (Users == null)
@@ -25,12 +26,18 @@ else
                     <td>@user.Username</td>
                     <td>@user.Age</td>
                     <td>
-                    <a href="@($"userdetail/{user.Id}")" class="btn btn-primary table-btn">
-                        <i class="fas fa-info-circle">Details</i>
-                    </a>
+                        <a href="@($"userdetail/{user.Id}")" class="btn btn-primary table-btn">
+                            <i class="fas fa-info-circle">Details</i>
+                        </a>
+                    </td>
+                    <td>
+                        <button @onclick="@(x => EditUser(user))">Edit</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+<button @onclick="@AddUser" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<AddUserDialog @ref="AddUserDialog"  AddEventCallBack="@UsersListChanged"/>
+<EditUserDialog @ref="EditUserDialog" EditEventCallBack="@UsersListChanged" />

@@ -1,6 +1,7 @@
 ﻿using BethanysPieShopHRM.Shared.DTOs;
 using BethanysPieShopHRM.Shared.IServices;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace BethanysPieShop.Pages.Componets
         public EventCallback<bool> CloseEventCallBack { get; set; }//we are sending a message from edituserdialog to users overview
         [Inject]
         public IUserDataService UserDataService { get; set; }
+        
         public bool ShowDialog { get; set; }
         public void Show()
         {

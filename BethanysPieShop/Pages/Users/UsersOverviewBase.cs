@@ -2,6 +2,8 @@
 using BethanysPieShopHRM.Shared.DTOs;
 using BethanysPieShopHRM.Shared.IServices;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace BethanysPieShop.Pages.Users
 {
     public class UsersOverviewBase : ComponentBase
     {
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }//this is used so we can call js methods inside our cs files
         [Inject]
         public IUserDataService UserDataService { get; set; }
         public IEnumerable<User> Users { get; set; }
@@ -48,6 +52,12 @@ namespace BethanysPieShop.Pages.Users
         {
             Users = (await UserDataService.GetUsersAsync()).ToList();
             StateHasChanged();
+        }
+
+        public async void SayHello(string userName)
+        {
+            var serializedItem = JsonConvert.SerializeObject(userName);
+            await JSRuntime.InvokeVoidAsync("sayHello", serializedItem);
         }
     }
 }

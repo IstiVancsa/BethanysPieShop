@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,23 +73,21 @@ namespace BethanysPieShopHRM.Shared.Services
         }
         public async Task<bool> UpdateUserAsync(User user)
         {
-            //bool result = true;
+            try
+            {
+                var uri = new Uri(string.Format(this._httpClient.BaseAddress + "User/EditUser"));
 
-            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.UrlApi + item.Id);
-            //request.Method = "PUT";
-            //request.ContentType = "application/json";
+                var serializedItem = JsonConvert.SerializeObject(user);
+                var content = new StringContent(serializedItem, Encoding.UTF8, "application/json");
+                var response = await this._httpClient.PutAsync(uri, content);
 
-            //var serializedItem = JsonConvert.SerializeObject(item);
-            //var content = new StringContent(serializedItem, Encoding.UTF8, "application/json");
-            //byte[] bytes = Encoding.ASCII.GetBytes(serializedItem);
-
-            //using (var requestStream = request.GetRequestStream())
-            //    requestStream.Write(bytes, 0, bytes.Length);
-
-            //var response = (await request.GetResponseAsync()) as HttpWebResponse;
-            //result = response.StatusCode == HttpStatusCode.OK;
-            //return result;
-            throw new NotImplementedException();
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                var dsad = ex.Message;
+                return false;
+            }
         }
 
         public async Task<TResult> ReturnGetHttp<TResult>(string url)

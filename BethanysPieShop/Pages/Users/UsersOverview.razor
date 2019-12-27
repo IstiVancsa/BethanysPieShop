@@ -39,5 +39,5 @@ else
     </table>
 }
 <button @onclick="@AddUser" class="btn btn-dark table-btn quick-add-btn">&nbsp;&nbsp;&nbsp;&nbsp;</button>
-<AddUserDialog @ref="AddUserDialog"  AddEventCallBack="@UsersListChanged"/>
-<EditUserDialog @ref="EditUserDialog" EditEventCallBack="@UsersListChanged" />
+<BethanysPieShop.Pages.Componets.AddUserDialog @ref="AddUserDialog" CloseEventCallBack="@AddUserDialog_OnDialogClose"></BethanysPieShop.Pages.Componets.AddUserDialog>
+<BethanysPieShop.Pages.Componets.EditUserDialog @ref="EditUserDialog" CloseEventCallBack="@EditUserDialog_OnDialogClose"></BethanysPieShop.Pages.Componets.EditUserDialog>

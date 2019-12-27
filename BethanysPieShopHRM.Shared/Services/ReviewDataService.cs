@@ -17,9 +17,24 @@ namespace BethanysPieShopHRM.Shared.Services
         {
             _httpClient = httpClient;
         }
-        public Task<bool> AddReviewAsync(Review Review)
+        public async Task<bool> AddReviewAsync(Review Review)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(string.Format(this._httpClient.BaseAddress + "Review/AddReview"));
+            try
+            {
+
+                //this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(this.Token);
+                var serializedUser = JsonConvert.SerializeObject(Review);
+                var data = new StringContent(serializedUser, Encoding.UTF8, "application/json");
+                var response = await this._httpClient.PostAsync(uri, data);
+                return response.IsSuccessStatusCode;
+
+            }
+            catch (Exception ex)
+            {
+                var dsad = ex.Message;
+                return false;
+            }
         }
 
         public Task<bool> DeleteReviewAsync(Guid id)

@@ -1,5 +1,4 @@
-﻿using BethanysPieShop.Pages.Componets.AddUser;
-using BethanysPieShop.Pages.EditUserComponent;
+﻿using BethanysPieShop.Pages.Componets;
 using BethanysPieShopHRM.Shared.DTOs;
 using BethanysPieShopHRM.Shared.IServices;
 using Microsoft.AspNetCore.Components;
@@ -16,8 +15,6 @@ namespace BethanysPieShop.Pages.Users
         public IEnumerable<User> Users { get; set; }
         protected AddUserDialog AddUserDialog { get; set; }
         protected EditUserDialog EditUserDialog { get; set; }
-        [Parameter]
-        public EventCallback<User> OpenEditPopUp { get; set; }
         protected override async Task OnInitializedAsync()
         {
             Users = await UserDataService.GetUsersAsync();
@@ -26,13 +23,28 @@ namespace BethanysPieShop.Pages.Users
         {
             AddUserDialog.Show();
         }
-        protected async void EditUser(User user)
+        protected void EditUser(User user)
         {
-            await OpenEditPopUp.InvokeAsync(user);
+            EditUserDialog.User.Age = user.Age;
+            EditUserDialog.User.Username = user.Username;
+            EditUserDialog.User.Password = user.Password;
+            EditUserDialog.User.Id = user.Id;
+            EditUserDialog.User.Token = user.Token;
             EditUserDialog.Show();
         }
 
-        public async void UsersListChanged()
+        public async Task UsersListChanged()
+        {
+            Users = (await UserDataService.GetUsersAsync()).ToList();
+            StateHasChanged();
+        }
+
+        public async void AddUserDialog_OnDialogClose()
+        {
+            Users = (await UserDataService.GetUsersAsync()).ToList();
+            StateHasChanged();
+        }
+        public async void EditUserDialog_OnDialogClose()
         {
             Users = (await UserDataService.GetUsersAsync()).ToList();
             StateHasChanged();

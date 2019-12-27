@@ -2,46 +2,58 @@
 using BethanysPieShopHRM.Shared.IServices;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Components.AddUser
+namespace BethanysPieShop.Pages.Componets
 {
-    //The components are parts of pages so for the simple way that we want to use the across all the projects we will create another class library for them
-
     public class AddUserDialogBase : ComponentBase
     {
+        public User User { get; set; } = new User
+        {
+            Id = new Guid(),
+            Age = 69,
+            Password = "1234",
+            Username = "Gigel"
+        };
+        [Parameter]//now we can cann it as parameter in razor file
+        public EventCallback<bool> CloseEventCallBack { get; set; }//we are sending a message from adduserdialog to users overview
+
         [Inject]
         public IUserDataService UserDataService { get; set; }
-        [Parameter]
-        public EventCallback<bool> AddEventCallBack { get; set; }
-        public User User { get; set; } = new User { Id = new Guid(), Age = 0, Password = "1234", Reviews = new List<Review>(), Token = new Guid(), Username = "Gigel" };
         public bool ShowDialog { get; set; }
-
         public void Show()
         {
+            ResetDialog();
             ShowDialog = true;
             StateHasChanged();
         }
+
         public void Close()
         {
             ShowDialog = false;
             StateHasChanged();
         }
-        public void ResetDialog()
+
+        private void ResetDialog()
         {
-            User = new User { Id = new Guid(), Age = 0, Password = "1234", Reviews = new List<Review>(), Token = new Guid(), Username = "Gigel" };
+            this.User = new User
+            {
+                Id = new Guid(),
+                Age = 69,
+                Password = "1234",
+                Username = "Gigel"
+            };
         }
 
         protected async Task HandleValidSubmit()
         {
             await UserDataService.AddUserAsync(User);
-            await AddEventCallBack.InvokeAsync(true);
+
+            await CloseEventCallBack.InvokeAsync(true);//we can send even the save employee here
+
             ShowDialog = false;
 
             StateHasChanged();
         }
-
     }
 }

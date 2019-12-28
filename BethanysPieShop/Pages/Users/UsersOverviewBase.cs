@@ -37,12 +37,6 @@ namespace BethanysPieShop.Pages.Users
             EditUserDialog.Show();
         }
 
-        public async Task UsersListChanged()
-        {
-            Users = (await UserDataService.GetUsersAsync()).ToList();
-            StateHasChanged();
-        }
-
         public async void AddUserDialog_OnDialogClose()
         {
             Users = (await UserDataService.GetUsersAsync()).ToList();
